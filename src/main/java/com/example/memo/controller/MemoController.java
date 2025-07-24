@@ -4,6 +4,8 @@ package com.example.memo.controller;
 import com.example.memo.dto.MemoRequestDto;
 import com.example.memo.dto.MemoResponseDto;
 import com.example.memo.entity.Memo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -26,9 +28,11 @@ public class MemoController {
     @PostMapping
 
 
+    //ResponseEntity: 메모를 생성하는 api에서 상태코드를 따로 반환할 수 있게 해주는 것
+
     //호출해서 사용 할 컨트롤러api생성
     //() : 클라이언트로 부터 JSON 요청받았을 때 바인딩
-    public MemoResponseDto createMemo(@RequestBody MemoRequestDto dto) {
+    public ResponseEntity <MemoResponseDto> createMemo(@RequestBody MemoRequestDto dto) {
 
         //식별자가 1씩 증가하도록 만들어야 됨 중복불가
         Long memoId=memoList.isEmpty()? 1: Collections.max(memoList.keySet())+1;
@@ -45,7 +49,7 @@ public class MemoController {
         memoList.put(memoId, memo);
 
         // responseDto형태로 변환돼서 실제로 응답이 이뤄짐
-        return new MemoResponseDto(memo);
+        return new ResponseEntity<>(new MemoResponseDto(memo), HttpStatus.CREATED);
     }
 
     //메모 조회
