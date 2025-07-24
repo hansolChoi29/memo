@@ -49,10 +49,26 @@ public class MemoController {
     }
 
     //메모 조회
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public MemoResponseDto findMemoById(@PathVariable Long id) {
       Memo memo=  memoList.get(id);
 
       return new MemoResponseDto(memo);
+    }
+
+    //메모 수정-전체수정
+    @PutMapping("/{id}")
+    // PathVariable: 경로
+    // RequestBody : 수정 시 id뿐만 아니라 어떤 데이터를 수정할지 요청도 받아야 함. (제목과 컨텐츠 둘 다 수정)
+    public MemoResponseDto updateMemoById(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
+      Memo memo=  memoList.get(id);
+        memo.update(dto);
+    return new MemoResponseDto(memo);
+    }
+
+    //삭제
+    @DeleteMapping("/{id}")
+    public void deleteMemoById(@PathVariable Long id) {
+        memoList.remove(id);
     }
 }
