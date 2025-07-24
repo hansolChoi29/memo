@@ -4,10 +4,7 @@ package com.example.memo.controller;
 import com.example.memo.dto.MemoRequestDto;
 import com.example.memo.dto.MemoResponseDto;
 import com.example.memo.entity.Memo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,4 +48,11 @@ public class MemoController {
         return new MemoResponseDto(memo);
     }
 
+    //메모 조회
+    @GetMapping("{id}")
+    public MemoResponseDto findMemoById(@PathVariable Long id) {
+      Memo memo=  memoList.get(id);
+
+      return new MemoResponseDto(memo);
+    }
 }
