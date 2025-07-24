@@ -8,9 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 // 데이터를 항상 JSON형태로 통신하기로 함
 @RestController
@@ -49,9 +47,26 @@ public class MemoController {
         memoList.put(memoId, memo);
 
         // responseDto형태로 변환돼서 실제로 응답이 이뤄짐
-        return new ResponseEntity<>(new MemoResponseDto(memo), HttpStatus.CREATED);
+        return new ResponseEntity<>(new MemoResponseDto(memo),
+            //HttpStatus.CREATED: 실제로 응답
+            HttpStatus.CREATED);
     }
 
+
+    @GetMapping
+    public List<MemoResponseDto> findAllMemos() {
+        //init List
+        List<MemoResponseDto> responseList=new ArrayList<>();
+
+        //HashMap<Memo>->List<MemoResponseDto>
+        for(Memo memo:memoList.values()){
+            MemoResponseDto responseDto=new MemoResponseDto(memo);
+            responseList.add(responseDto);
+        }
+        //Map To List->   for문과 같음, 지금은 for문 사용할건데 나중에 stream에 익숙해지면 그때 사용해도 됨
+//        responseList=memoList.values().stream().map(MemoResponseDto::new).toList();
+        return  responseList;
+    }
     //메모 조회
     @GetMapping("/{id}")
     public MemoResponseDto findMemoById(@PathVariable Long id) {
