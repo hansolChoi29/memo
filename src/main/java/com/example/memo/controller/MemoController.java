@@ -86,10 +86,21 @@ public class MemoController {
     @PutMapping("/{id}")
     // PathVariable: 경로
     // RequestBody : 수정 시 id뿐만 아니라 어떤 데이터를 수정할지 요청도 받아야 함. (제목과 컨텐츠 둘 다 수정)
-    public MemoResponseDto updateMemoById(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
+    public ResponseEntity <MemoResponseDto> updateMemoById(@PathVariable Long id, @RequestBody MemoRequestDto dto) {
       Memo memo=  memoList.get(id);
+
+      if(memo==null){
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      //필수값 검증
+        if(dto.getTitle()==null||dto.getContents()==null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         memo.update(dto);
-    return new MemoResponseDto(memo);
+
+    //성공 시 OK
+    return new ResponseEntity<>(new MemoResponseDto(memo), HttpStatus.OK);
     }
 
     //삭제
