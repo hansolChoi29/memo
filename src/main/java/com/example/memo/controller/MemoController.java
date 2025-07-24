@@ -69,10 +69,17 @@ public class MemoController {
     }
     //메모 조회
     @GetMapping("/{id}")
-    public MemoResponseDto findMemoById(@PathVariable Long id) {
+    public ResponseEntity<MemoResponseDto> findMemoById(@PathVariable Long id) {
       Memo memo=  memoList.get(id);
 
-      return new MemoResponseDto(memo);
+      //조회된 응답이 없을 경우 낫파운드
+      if(memo==null){
+          //ResponseEntity:동적으로 응답해줄 수 있음
+          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+          //404 Not Found
+      }
+
+      return new ResponseEntity<>(new MemoResponseDto(memo), HttpStatus.OK);
     }
 
     //메모 수정-전체수정
