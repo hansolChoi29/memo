@@ -143,3 +143,8 @@ public ResponseEntity<MemoResponseDto> updateTitle(
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
+
+//문제점01 : 컨트롤러에서 저장, 응답, 요청받기, 요청처리 등
+// 너무 많은 걸 하고 있음
+
+//문제점02 : 서버가 종료된 후 다시 켜지면 데이터가 모두 초기화 됨
