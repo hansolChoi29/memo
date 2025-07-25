@@ -131,8 +131,15 @@ public ResponseEntity<MemoResponseDto> updateTitle(
 
 
     //삭제
+    //단건삭제
     @DeleteMapping("/{id}")
-    public void deleteMemoById(@PathVariable Long id) {
-        memoList.remove(id);
+    public ResponseEntity<Void> deleteMemoById(@PathVariable Long id) {
+       //memoList의 key값에 id를 포함하고 있다면? 검사
+        if(memoList.containsKey(id)){
+            memoList.remove(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
