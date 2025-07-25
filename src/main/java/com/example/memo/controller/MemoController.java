@@ -102,6 +102,33 @@ public class MemoController {
     //성공 시 OK
     return new ResponseEntity<>(new MemoResponseDto(memo), HttpStatus.OK);
     }
+    
+    //제목수정하는 함수
+    //postman에서 제목 수정 시 
+    //{
+    //    "title": "수정된 타이틀1"
+    //    
+    //}title만 넣어줘야 함
+    //컨텐츠가 있거나, 타이틀이 없을 경우 400Bad Request
+@PatchMapping("/{id}")
+public ResponseEntity<MemoResponseDto> updateTitle(
+        //식별자 id, 타이틀
+        @PathVariable Long id, @RequestBody MemoRequestDto dto
+){
+    Memo memo= memoList.get(id);
+    if(memo== null){
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
+    //필수값검증
+    if(dto.getTitle()==null||dto.getContents()!=null){
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    memo.updateTitle(dto);
+    return new ResponseEntity<>(new MemoResponseDto(memo), HttpStatus.OK);
+}
+
 
     //삭제
     @DeleteMapping("/{id}")
